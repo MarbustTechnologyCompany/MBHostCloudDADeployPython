@@ -2,6 +2,8 @@
 
 **Despliega tu propia app Python (FastAPI, Flask o Django) en tu hosting de MBHostCloud — con control total y logs en vivo.**
 
+> Repo **interno** (guía). Para colaborar: [`CONTRIBUTING.md`](CONTRIBUTING.md) · reglas de la guía: [`AGENTS.md`](AGENTS.md) · primer día: [`docs/ONBOARDING.md`](docs/ONBOARDING.md) · seguridad: [`SECURITY.md`](SECURITY.md).
+
 > ⚠️ **Guía exclusiva para hostings de MBHostCloud®.** Todos los comandos, rutas, versiones y configuraciones fueron **verificados sobre la infraestructura de MBHostCloud** (DirectAdmin + Apache). Están pensados **únicamente** para cuentas de hosting de MBHostCloud®; en otros proveedores es muy probable que no apliquen o se comporten distinto. Si tienes tu hosting con nosotros, funcionan tal cual. 💙
 
 Esta guía es para clientes de MBHostCloud (hosting **DirectAdmin + Apache**) que quieren correr su propia aplicación **Python** (una API con FastAPI, Flask o Django, un backend, un bot, lo que sea) directamente en su cuenta, sin depender de nadie. Vas a poder subir tu código, armar tu entorno, mantener el proceso vivo aunque el servidor se reinicie, ver los logs en tiempo real, y enlazar tu dominio a la app.
