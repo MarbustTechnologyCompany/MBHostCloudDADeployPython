@@ -211,25 +211,14 @@ pm2 delete miapi                 # lo quita de PM2 por completo
 
 ## Paso 4 — Que sobreviva a los reinicios del servidor
 
-Si el servidor se reinicia, quieres que tu app vuelva sola. Son **dos piezas**:
+Si el servidor se reinicia, quieres que tu app vuelva sola. Son **dos piezas**, y de tu lado solo hay **un comando**:
 
-**A) Un servicio de arranque (lo activa una sola vez el administrador).**
-Como cliente no eres root, así que PM2 no puede instalar el servicio de arranque por ti — pero **te imprime la línea exacta** que el admin debe correr:
+**A) El servicio de arranque — se activa solo, no haces nada.**
+Tu cuenta necesita un servicio del sistema que levante PM2 cuando arranca el servidor. **No lo pides a soporte ni corres `pm2 startup`:** el servidor lo crea por ti de dos formas:
+- al **enlazar** tu app desde el panel (sección **"Python App"**) o con el CLI `mbpython` (Paso 5);
+- y, para cualquier cuenta que tenga su lista guardada (pieza B), una **tarea diaria del servidor** crea el servicio si aún faltara.
 
-```bash
-pm2 startup
-```
-
-Verás algo así:
-
-```
-[PM2] To setup the Startup Script, copy/paste the following command:
-sudo env PATH=$PATH:... pm2 startup systemd -u TU_USUARIO --hp /home/TU_USUARIO
-```
-
-**Copia esa línea `sudo ...` y pásasela a soporte de MBHostCloud.** Se corre una sola vez y queda listo para siempre.
-
-**B) Guardar tu lista de apps (esto lo haces tú, sin root).**
+**B) Guardar tu lista de apps (esto sí lo haces tú).**
 
 ```bash
 pm2 save
@@ -237,7 +226,7 @@ pm2 save
 
 Esto congela la lista actual (`Successfully saved in ~/.pm2/dump.pm2`). En el próximo arranque del servidor, PM2 resucita exactamente esas apps. Repite `pm2 save` cada vez que agregues, quites o cambies tus apps.
 
-> **Cuidado:** para persistir usa siempre `pm2 save`. No intentes reiniciar el servicio con `systemctl` mientras tu daemon de PM2 está vivo. Si alguna vez necesitas forzarlo, primero `pm2 kill` y luego que el admin lo arranque.
+> **Cuidado:** para persistir usa siempre `pm2 save`. No intentes reiniciar el servicio con `systemctl`: no hace falta, y con tu daemon de PM2 vivo puede entrar en un bucle de error. Si tu app quedó en un estado raro, vuelve a **enlazarla** desde el panel: el enlace la deja corriendo y persistente.
 
 ---
 
@@ -263,8 +252,6 @@ mbpython --status          # ver el resultado del enlace
 (Django: `mbpython api.tudominio.com ~/miproyecto miproyecto.wsgi:application miapi`.)
 
 En segundos tu dominio queda sirviendo tu app **por socket** (sin puerto abierto), con **SSL**. Nosotros configuramos el reverse-proxy; **tú solo mantienes tu app viva con pm2 y ves tus logs.** 🎉
-
-> *(Mientras habilitamos la sección "Python App" en tu panel, escríbenos tu dominio + carpeta de la app a **support@mbhostcloud.com** y lo activamos en el momento.)*
 
 ---
 
@@ -372,7 +359,6 @@ pm2 save
 
 # 5) Enlazar el dominio: por el panel (sección "Python App"),
 #    o por Terminal:   mbpython api.tudominio.com ~/miapi main:app miapi
-#    o pídelo a support@mbhostcloud.com
 ```
 
 ¡Listo! Tu app Python corre bajo tu control, sobrevive reinicios, y puedes ver todo lo que hace en tiempo real — **sin haber tocado tu código.** Bienvenido al control total. 🚀
@@ -381,6 +367,6 @@ pm2 save
 
 ## ¿Necesitas ayuda?
 
-Esta guía es **exclusiva para clientes de MBHostCloud®**. Para el único paso que requiere administrador (el `pm2 startup` que activa el arranque en boot) o para cualquier duda del despliegue, escríbenos a **support@mbhostcloud.com** y te ayudamos.
+Esta guía es **exclusiva para clientes de MBHostCloud®**. Para cualquier duda del despliegue, escríbenos a **support@mbhostcloud.com** y te ayudamos.
 
 <sub>MBHostCloud® — un servicio de MarBust Technology Company. Hosting con control real y logs en vivo.</sub>
